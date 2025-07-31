@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 import Footer from '../Footer'
 import Header from '../Header'
 
+const searchRouteActive = true
 const apiStatusConstants = {
   initial: 'INITIAL',
   success: 'SUCCESS',
@@ -15,20 +16,19 @@ const apiStatusConstants = {
   inProgress: 'IN PROGRESS',
 }
 
-class Popular extends Component {
+let searchInput
+
+class Search extends Component {
   state = {
-    popularList: [],
-    apiStatus: apiStatusConstants.initial,
+    searchMoviesList: [],
   }
 
-  componentDidMount() {
-    this.getPopularMovies()
-  }
-
-  getPopularMovies = async () => {
+  getSearchMoviesList = async search => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
+
+    searchInput = search
 
     const token = Cookies.get('jwt_token')
     // console.log(token)
@@ -39,7 +39,7 @@ class Popular extends Component {
       method: 'GET',
     }
 
-    const url = 'https://apis.ccbp.in/movies-app/popular-movies'
+    const url = `https://apis.ccbp.in/movies-app/movies-search?search=${search}`
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
@@ -53,7 +53,7 @@ class Popular extends Component {
       //   console.log(updateData)
       this.setState({
         apiStatus: apiStatusConstants.success,
-        popularList: updateData,
+        searchMoviesList: updateData,
       })
     } else {
       this.setState({
@@ -68,30 +68,42 @@ class Popular extends Component {
     </div>
   )
 
-  popularViewSucces = () => {
-    const {popularList} = this.state
+  searchViewSucces = () => {
+    const {searchMoviesList} = this.state
+    if (searchMoviesList.length === 0) {
+      return (
+        <div className="no-search-results-bg">
+          <img
+            src="https://res.cloudinary.com/dququtrt4/image/upload/v1671710952/moviesApp/movies_not_found_d6o3ux.png"
+            alt="no movies"
+            className="no-movies-img"
+          />
+          <p className="no-movies-para">{`Your search for ${searchInput} did not find any matches.`}</p>
+        </div>
+      )
+    }
     return (
-      <ul className="popular-movies-container">
-        {popularList.map(eachItem => (
-          <Link
-            to={`movies/${eachItem.id}`}
-            className="popular-image-link"
-            key={eachItem.id}
-          >
-            <li className="list-item">
+      <>
+        {searchMoviesList.map(each => (
+          <li key={each.id} className="movie-search-item">
+            <Link to={`/movies/${each.id}`}>
               <img
-                src={eachItem.posterPath}
-                alt={eachItem.title}
-                className="popular-img-item"
+                src={each.posterPath}
+                alt={each.title}
+                className="search-movie-img"
               />
-            </li>
-          </Link>
+            </Link>
+          </li>
         ))}
-      </ul>
+      </>
     )
   }
 
-  popularViewFailure = () => (
+  getSearchMoviesListTry = () => {
+    this.getSearchMoviesList(searchInput)
+  }
+
+  searchViewFailure = () => (
     <div className="popular-failure-bg">
       <img
         src="https://res.cloudinary.com/dququtrt4/image/upload/v1671434459/moviesApp/Background-Complete_zy2tyw.png"
@@ -104,22 +116,22 @@ class Popular extends Component {
       <button
         type="button"
         className="popular-failure-btn"
-        onClick={this.getPopularMovies}
+        onClick={this.getSearchMoviesListTry}
       >
         Try Again
       </button>
     </div>
   )
 
-  popularView = () => {
+  searchMoviesListView = () => {
     const {apiStatus} = this.state
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
         return this.lodingView()
       case apiStatusConstants.success:
-        return this.popularViewSucces()
+        return this.searchViewSucces()
       case apiStatusConstants.failure:
-        return this.popularViewFailure()
+        return this.searchViewFailure()
       default:
         return null
     }
@@ -128,14 +140,20 @@ class Popular extends Component {
   render() {
     return (
       <>
-        <div className="popular-main-bg">
-          <Header />
-          {this.popularView()}
-          <Footer />
+        <div className="search-bg">
+          <Header
+            getSearchMoviesList={this.getSearchMoviesList}
+            searchRouteActive={searchRouteActive}
+          />
+
+          <ul className="search-list-container">
+            {this.searchMoviesListView()}
+          </ul>
         </div>
+        <Footer />
       </>
     )
   }
 }
 
-export default Popular
+export default Search

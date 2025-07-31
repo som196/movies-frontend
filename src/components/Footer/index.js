@@ -1,31 +1,25 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {
-  faGoogle,
-  faTwitter,
-  faInstagram,
-  faYoutube,
-} from '@fortawesome/free-brands-svg-icons' // Import individual icons
-
 import './index.css'
 
-const footerContainer = () => (
-  <footer className="main-footer-container">
-    <div className="footer-container">
-      <button type="button" className="icon-button">
-        <FontAwesomeIcon icon={faGoogle} className="footer-icons" />
+import {FaGoogle, FaTwitter, FaInstagram, FaYoutube} from 'react-icons/fa'
+
+const Footer = () => (
+  <div className="footer-container">
+    <div className="icons-container">
+      <button className="footer-icon-btn" type="button">
+        <FaGoogle className="footer-icon" />
       </button>
-      <button type="button" className="icon-button">
-        <FontAwesomeIcon icon={faTwitter} className="footer-icons" />
+      <button className="footer-icon-btn" type="button">
+        <FaTwitter className="footer-icon" />
       </button>
-      <button type="button" className="icon-button">
-        <FontAwesomeIcon icon={faInstagram} className="footer-icons" />
+      <button className="footer-icon-btn" type="button">
+        <FaInstagram className="footer-icon" />
       </button>
-      <button type="button" className="icon-button">
-        <FontAwesomeIcon icon={faYoutube} className="footer-icons" />
+      <button className="footer-icon-btn" type="button">
+        <FaYoutube className="footer-icon" />
       </button>
     </div>
-    <p className="contact-us-para">Contact Us</p>
-  </footer>
+    <p className="footer-para">Contact us</p>
+  </div>
 )
 
-export default footerContainer
+export default Footer

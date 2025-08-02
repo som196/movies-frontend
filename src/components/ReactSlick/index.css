@@ -29,9 +29,10 @@
   border-radius: 5px;
   width: 100%;
 }
-@media (min-width: 767px) {
+
+@media (min-width: 767px) and (max-width: 1023px) {
   .logo-image {
-    height: 160px;
+    height: 200px;
     padding: 0px 10px;
   }
   .slick-link {
@@ -50,4 +51,15 @@ Previous Arrow buttons according to your project */
 .slick-next:before {
   color: #fff;
   font-size: 16spx;
+}
+
+@media (min-width: 1024px){
+  .logo-image {
+    height: 250px;
+    padding: 0px 10px;
+  }
+  .slick-link {
+    height: 160px;
+    padding: 0px 10px;
+  }
 }

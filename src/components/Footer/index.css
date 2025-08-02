@@ -34,6 +34,10 @@
 }
 
 @media (min-width: 767px) {
+  .footer-container {
+    height: 5em;
+    padding: 50px 10px;
+  }
   .footer-icon-btn {
     margin: 5px;
   }

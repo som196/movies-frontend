@@ -1,3 +1,20 @@
+/*
+  CRITICAL FIX: These rules completely remove the default arrows.
+  The `content: '' !important;` rule is key to overriding the default.
+*/
+.slick-prev:before,
+.slick-next:before {
+  content: '' !important;
+  display: none !important;
+}
+
+/* Ensure your custom button background is transparent */
+.slick-prev,
+.slick-next {
+  background: transparent !important;
+  border: none !important;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -44,16 +61,8 @@
 .slick-item {
   margin: 0px 10px;
 }
-/* You can change the CSS color to style the Next and 
-Previous Arrow buttons according to your project */
 
-.slick-prev:before,
-.slick-next:before {
-  color: #fff;
-  font-size: 16spx;
-}
-
-@media (min-width: 1024px){
+@media (min-width: 1024px) {
   .logo-image {
     height: 250px;
     padding: 0px 10px;

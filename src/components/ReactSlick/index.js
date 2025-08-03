@@ -1,9 +1,79 @@
 import {Component} from 'react'
 import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
+import {FaChevronLeft, FaChevronRight} from 'react-icons/fa'
 
-/* Add css to your project */
+/*
+  IMPORTANT: Make sure your custom CSS file is imported AFTER the
+  react-slick CSS files to ensure your rules override the defaults.
+*/
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import './index.css'
+
+// Custom component for the left arrow
+const PrevArrow = ({onClick, className}) => {
+  // Check if the 'slick-disabled' class is present to determine if the arrow should be unhighlighted
+  const isDisabled = className?.includes('slick-disabled')
+
+  const arrowStyle = {
+    opacity: isDisabled ? 0.3 : 1, // Change opacity if the arrow is disabled
+    cursor: isDisabled ? 'not-allowed' : 'pointer', // Change cursor
+    left: '-25px', // Adjusted position for better visibility
+    zIndex: 1,
+    color: '#ffff',
+    fontSize: '24px',
+    transition: 'opacity 0.3s ease',
+  }
+
+  return (
+    <button
+      // This is the CRITICAL change: Concatenate the passed className prop
+      // with the base classes to ensure 'slick-disabled' is applied when needed.
+      className={`slick-arrow slick-prev ${className}`}
+      onClick={onClick}
+      type="button"
+      aria-label="Previous"
+      aria-disabled={isDisabled} // Set aria-disabled for accessibility
+      style={arrowStyle}
+      disabled={isDisabled} // Disable the button element itself
+    >
+      <FaChevronLeft />
+    </button>
+  )
+}
+
+// Custom component for the right arrow
+const NextArrow = ({onClick, className}) => {
+  // Check if the 'slick-disabled' class is present to determine if the arrow should be unhighlighted
+  const isDisabled = className?.includes('slick-disabled')
+
+  const arrowStyle = {
+    opacity: isDisabled ? 0.3 : 1, // Change opacity if the arrow is disabled
+    cursor: isDisabled ? 'not-allowed' : 'pointer', // Change cursor
+    right: '-25px', // Adjusted position for better visibility
+    zIndex: 1,
+    color: '#ffff',
+    fontSize: '24px',
+    transition: 'opacity 0.3s ease',
+  }
+
+  return (
+    <button
+      // This is the CRITICAL change: Concatenate the passed className prop
+      // with the base classes to ensure 'slick-disabled' is applied when needed.
+      className={`slick-arrow slick-next ${className}`}
+      onClick={onClick}
+      type="button"
+      aria-label="Next"
+      aria-disabled={isDisabled} // Set aria-disabled for accessibility
+      style={arrowStyle}
+      disabled={isDisabled} // Disable the button element itself
+    >
+      <FaChevronRight />
+    </button>
+  )
+}
 
 const settings = {
   dots: false,
@@ -34,12 +104,13 @@ const settings = {
       },
     },
   ],
+  nextArrow: <NextArrow />,
+  prevArrow: <PrevArrow />,
 }
 
 class ReactSlick extends Component {
   renderSlider = () => {
     const {movies} = this.props
-    // console.log(movies)
     return (
       <Slider {...settings}>
         {movies.map(eachLogo => {

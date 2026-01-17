@@ -220,7 +220,7 @@ class Home extends Component {
         alt="failure view"
         className="failure-icon"
       />
-      <p className="failure-para">Something went wrong. Please try again</p>
+      <p className="failure-para">Something is not correct. Please try again</p>
       <button
         type="button"
         className="failure-btn-try"
